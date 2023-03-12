@@ -4,6 +4,7 @@ import os
 import cv2
 import wx
 
+from package.Gamma import GammaMain
 from package.Filtering import FilteringMain
 
 # メイン関数
@@ -56,7 +57,8 @@ def ImageProcessing(file_path):
 
         cap_file = cv2.VideoCapture(file_path)
 
-        setting_target = [  'Filtering'
+        setting_target = [  'Gamma',
+                            'Filtering'
                             ]
 
         # 設定読み込み
@@ -66,8 +68,12 @@ def ImageProcessing(file_path):
             __, frame = cap_file.read()
             cv2.imshow("BaseImg", frame)
 
-            # ①フィルタリング
-            img_filter = FilteringMain(frame, setting_dict[setting_target[0]])
+            # ①ガンマ補正
+            img_gamma = GammaMain(frame, setting_dict['Gamma'])
+            cv2.imshow("Gamma", img_gamma)
+
+            # ②フィルタリング
+            img_filter = FilteringMain(img_gamma, setting_dict['Filtering'])
             cv2.imshow("Filtering", img_filter)
 
             key = cv2.waitKey(30)
