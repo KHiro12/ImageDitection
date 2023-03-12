@@ -7,9 +7,10 @@ import wx
 from package.Gamma import GammaMain
 from package.Filtering import FilteringMain
 
+
 # メイン関数
 def Main():
-    app = wx.App()
+    _ = wx.App()
     dialog = wx.FileDialog(None, u'動画像を選択してください。')
     dialog.ShowModal()
 
@@ -19,7 +20,7 @@ def Main():
 
 # メッセージ出力
 def OutPutMessage():
-    message =   u'''
+    message = u'''
 ■操作説明
 Enter：終了
                 '''
@@ -42,7 +43,7 @@ def ReadSetting(setting_target):
     if not update_flg:
         with open('.\\setting.json', 'w') as f:
             json.dump(output_dict, f, indent=2)
-    
+
     return output_dict
 
 
@@ -50,20 +51,19 @@ def ReadSetting(setting_target):
 def ImageProcessing(file_path):
     __, ext = os.path.splitext(file_path)
 
-    if  os.path.exists(file_path) and\
-        ext == '.mp4':
+    if os.path.exists(file_path) and\
+       ext == '.mp4':
         # 操作が分かるようにメッセージを出す
         OutPutMessage()
 
         cap_file = cv2.VideoCapture(file_path)
 
-        setting_target = [  'Gamma',
-                            'Filtering'
-                            ]
+        setting_target = ['Gamma',
+                          'Filtering']
 
         # 設定読み込み
         setting_dict = ReadSetting(setting_target)
-        
+
         while True:
             __, frame = cap_file.read()
             cv2.imshow("BaseImg", frame)

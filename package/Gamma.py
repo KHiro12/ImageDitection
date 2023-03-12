@@ -26,15 +26,15 @@ def GammaMain(img,  use_filter_val):
 # ガンマ補正値を計算(画面輝度から計算してみる)
 def CalcGammaValue(img):
     gain = 1.0
-    gain_range = {  'MIN':0.1,
-                    'MAX':2.0}
+    gain_range = {'MIN': 0.1,
+                  'MAX': 2.0}
 
     # 画像の輝度中央値を算出
     kido_mid = np.median(img)
 
     # 中央値が低いと明るく、高いと暗くなるように補正
-    gain =  gain_range['MAX'] - (kido_mid * \
-            ((gain_range['MAX']-gain_range['MIN']) / 255))
+    gain_diff = gain_range['MAX'] - gain_range['MIN']
+    gain = gain_range['MAX'] - (kido_mid * (gain_diff / 255))
 
     return gain
 
@@ -46,7 +46,7 @@ def GammaCorrection(img, gamma):
 
     for i in range(256):
         img2gamma[i][0] = 255 * pow(float(i)/255, 1.0/gamma)
-    
+
     # γ変換
     img_out = cv2.LUT(img, img2gamma)
 
